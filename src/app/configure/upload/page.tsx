@@ -34,7 +34,7 @@ const Page = () => {
 
     toast({
       title: `${file.file.type} type is not supported.`,
-      description: "Please choose a PNG, JPG, or JPEG image instead.",
+      description: "Please choose a PNG, JPG, JPEG, SVG or WEBP image instead.",
       variant: "destructive"
     })
   }
@@ -63,6 +63,8 @@ const Page = () => {
             'image/png': ['.png'],
             'image/jpeg': ['.jpeg'],
             'image/jpg': ['.jpg'],
+            'image/svg': ['.svg'],
+            'image/webp': ['.webp'],
           }}
           onDragEnter={() => setIsDragOver(true)}
           onDragLeave={() => setIsDragOver(false)}>
@@ -104,7 +106,7 @@ const Page = () => {
               </div>
 
               {isPending ? null : (
-                <p className='text-xs text-zinc-500'>PNG, JPG, JPEG</p>
+                <p className='text-xs text-zinc-500'>PNG, JPG, JPEG, SVG, WEBP</p>
               )}
             </div>
           )}
