@@ -157,6 +157,7 @@ export function Reviews() {
       <img
         aria-hidden='true'
         src='/what-people-are-buying.png'
+        alt='what people are buying'
         className='absolute select-none hidden xl:block -left-32 top-1/3'
       />
 

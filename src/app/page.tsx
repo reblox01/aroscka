@@ -96,10 +96,12 @@ export default function Home() {
             <div className='relative md:max-w-xl'>
               <img
                 src='/your-image.png'
+                alt='your image'
                 className='absolute w-40 lg:w-52 left-56 -top-20 select-none hidden sm:block lg:hidden xl:block'
               />
               <img
                 src='/line.png'
+                alt='line'
                 className='absolute w-20 -left-6 -bottom-6 select-none'
               />
               <Phone className='w-64' imgSrc='/testimonials/1.jpg' />
@@ -120,7 +122,7 @@ export default function Home() {
               </span>{' '}
               say
             </h2>
-            <img src='/snake-2.png' className='w-24 order-0 lg:order-2' />
+            <img src='/snake-2.png' alt='snake2' className='w-24 order-0 lg:order-2' />
           </div>
 
           <div className='mx-auto grid max-w-2xl grid-cols-1 px-4 lg:mx-0 lg:max-w-none lg:grid-cols-2 gap-y-16'>
@@ -221,12 +223,14 @@ export default function Home() {
             <div className='relative flex flex-col items-center md:grid grid-cols-2 gap-40'>
               <img
                 src='/arrow.png'
+                alt='arrow'
                 className='absolute top-[25rem] md:top-1/2 -translate-y-1/2 z-10 left-1/2 -translate-x-1/2 rotate-90 md:rotate-0'
               />
 
               <div className='relative h-80 md:h-full w-full md:justify-self-end max-w-sm rounded-xl bg-gray-900/5 ring-inset ring-gray-900/10 lg:rounded-2xl'>
                 <img
                   src='/horse.jpg'
+                  alt='horse'
                   className='rounded-md object-cover bg-white shadow-2xl ring-1 ring-gray-900/10 h-full w-full'
                 />
               </div>
