@@ -44,7 +44,7 @@ const DesignConfigurator = ({
   const { toast } = useToast()
   const router = useRouter()
 
-  const { mutate: saveConfig, isLoading: isPending } = useMutation({
+  const { mutate: saveConfig, isIdle : isPending } = useMutation({
     mutationKey: ['save-config'],
     mutationFn: async (args: SaveConfigArgs) => {
       await Promise.all([saveConfiguration(), _saveConfig(args)])
