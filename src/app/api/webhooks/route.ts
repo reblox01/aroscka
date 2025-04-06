@@ -6,7 +6,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import OrderReceivedEmail from '@/components/emails/OrderReceivedEmail'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
 export async function POST(req: Request) {
   try {
@@ -69,35 +69,31 @@ export async function POST(req: Request) {
             },
           },
         },
+        include: {
+          shippingAddress: true,
+        },
       })
 
-      await resend.emails.send({
-        from: 'CaseCobra <hello@joshtriedcoding.com>',
-        to: [event.data.object.customer_details.email],
-        subject: 'Thanks for your order!',
-        react: OrderReceivedEmail({
-          orderId,
-          orderDate: updatedOrder.createdAt.toLocaleDateString(),
-          // @ts-ignore
-          shippingAddress: {
-            name: session.customer_details!.name!,
-            city: shippingAddress!.city!,
-            country: shippingAddress!.country!,
-            postalCode: shippingAddress!.postal_code!,
-            street: shippingAddress!.line1!,
-            state: shippingAddress!.state,
-          },
-        }),
-      })
+      if (resend && updatedOrder.shippingAddress) {
+        await resend.emails.send({
+          from: 'Aroscka <mirocairo15@gmail.com>',
+          to: session.customer_details!.email!,
+          subject: 'Your order has been received',
+          react: OrderReceivedEmail({
+            shippingAddress: updatedOrder.shippingAddress,
+            orderId: updatedOrder.id,
+            orderDate: updatedOrder.createdAt.toLocaleDateString(),
+          }),
+        })
+      }
     }
 
     return NextResponse.json({ result: event, ok: true })
   } catch (err) {
-    console.error(err)
-
+    console.error('Webhook error:', err)
     return NextResponse.json(
-      { message: 'Something went wrong', ok: false },
-      { status: 500 }
+      { message: 'Webhook error: ' + (err instanceof Error ? err.message : 'Unknown error'), ok: false },
+      { status: 400 }
     )
   }
 }
