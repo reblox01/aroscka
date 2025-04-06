@@ -2,6 +2,8 @@
 
 A modern, interactive platform for designing and ordering custom iPhone cases, built with Next.js 14 App Router and TypeScript.
 
+[Live Preview](https://github.com/reblox01/aroscka/blob/b8a14aed618b4801f9f8bd074f131fc7542ac6d2/public/preview.png)
+
 ## Key Features
 
 - 🎨 Interactive Case Designer
@@ -181,10 +183,10 @@ If you find this project valuable and would like to support its continued develo
 
 - 💖 **One-time Donations**
   - [Buy me a coffee](https://www.buymeacoffee.com/arosck1) ☕ - For a quick thank you
-  - [PayPal](https://paypal.me/arosck1) 💳 - Flexible one-time contributions
+  - [PayPal](https://paypal.me/soukoutari) 💳 - Flexible one-time contributions
   
 - 🌟 **Recurring Support** 
-  - [GitHub Sponsors](https://github.com/sponsors/arosck1) 💝 - Support ongoing development
+  - [GitHub Sponsors](https://github.com/sponsors/reblox01) 💝 - Support ongoing development
 
 Your support helps maintain this project and enables new features. Thank you! 🙏
 
