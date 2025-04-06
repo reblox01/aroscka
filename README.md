@@ -55,7 +55,7 @@ A modern, interactive platform for designing and ordering custom iPhone cases, b
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/aroscka.git
+    git clone https://github.com/reblox01/aroscka.git
     cd aroscka
     ```
 
