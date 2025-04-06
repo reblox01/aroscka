@@ -1,5 +1,6 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { db } from "@/db";
  
 const f = createUploadthing();
  
@@ -23,11 +24,19 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
       console.log("Upload complete for userId:", metadata.userId);
- 
       console.log("file url", file.url);
+
+      // Create a new configuration in the database
+      const configuration = await db.configuration.create({
+        data: {
+          imageUrl: file.url,
+          width: 800,  // Default reasonable size for uploaded image
+          height: 800, // Will maintain aspect ratio when displayed
+        },
+      });
  
-      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userId };
+      // Return both the uploadedBy and the configId
+      return { uploadedBy: metadata.userId, configId: configuration.id };
     }),
 } satisfies FileRouter;
  

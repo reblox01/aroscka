@@ -9,6 +9,7 @@ export type SaveConfigArgs = {
   material: CaseMaterial
   model: PhoneModel
   configId: string
+  croppedImageUrl?: string
 }
 
 export async function saveConfig({
@@ -17,9 +18,16 @@ export async function saveConfig({
   material,
   model,
   configId,
+  croppedImageUrl,
 }: SaveConfigArgs) {
   await db.configuration.update({
     where: { id: configId },
-    data: { color, finish, material, model },
+    data: { 
+      color, 
+      finish, 
+      material, 
+      model,
+      ...(croppedImageUrl ? { croppedImageUrl } : {})
+    },
   })
 }

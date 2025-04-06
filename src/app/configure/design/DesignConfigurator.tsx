@@ -44,7 +44,7 @@ const DesignConfigurator = ({
   const { toast } = useToast()
   const router = useRouter()
 
-  const { mutate: saveConfig, isIdle : isPending } = useMutation({
+  const { mutate: saveConfig, isPending } = useMutation({
     mutationKey: ['save-config'],
     mutationFn: async (args: SaveConfigArgs) => {
       await Promise.all([saveConfiguration(), _saveConfig(args)])
@@ -130,7 +130,21 @@ const DesignConfigurator = ({
       const blob = base64ToBlob(base64Data, 'image/png')
       const file = new File([blob], 'filename.png', { type: 'image/png' })
 
-      await startUpload([file], { configId })
+      const uploadResult = await startUpload([file])
+      const croppedImageUrl = uploadResult?.[0]?.url
+      if (!croppedImageUrl) {
+        throw new Error('Failed to upload cropped image')
+      }
+
+      // Save the cropped image URL to the configuration
+      await _saveConfig({
+        configId,
+        color: options.color.value,
+        model: options.model.value,
+        material: options.material.value,
+        finish: options.finish.value,
+        croppedImageUrl,
+      })
     } catch (err) {
       toast({
         title: 'Something went wrong',

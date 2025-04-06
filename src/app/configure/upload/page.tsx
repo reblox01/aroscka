@@ -17,6 +17,15 @@ const Page = () => {
 
   const { startUpload, isUploading } = useUploadThing('imageUploader', {
     onClientUploadComplete: ([data]) => {
+      if (!data?.serverData?.configId) {
+        toast({
+          title: 'Error',
+          description: 'Something went wrong. Please try again.',
+          variant: 'destructive',
+        })
+        return
+      }
+      
       const configId = data.serverData.configId
       startTransition(() => {
         router.push(`/configure/design?id=${configId}`)
@@ -40,7 +49,7 @@ const Page = () => {
   }
 
   const onDropAccepted = (acceptedFiles: File[]) => {
-    startUpload(acceptedFiles, { configId: undefined })
+    startUpload(acceptedFiles)
 
     setIsDragOver(false)
   }
