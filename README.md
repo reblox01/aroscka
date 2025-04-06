@@ -2,7 +2,7 @@
 
 A modern, interactive platform for designing and ordering custom iPhone cases, built with Next.js 14 App Router and TypeScript.
 
-[Live Preview](https://github.com/reblox01/aroscka/blob/b8a14aed618b4801f9f8bd074f131fc7542ac6d2/public/preview.png)
+![Live Preview](https://github.com/reblox01/aroscka/blob/b8a14aed618b4801f9f8bd074f131fc7542ac6d2/public/preview.png)
 
 ## Key Features
 
