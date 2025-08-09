@@ -62,33 +62,37 @@ export const createCheckoutSession = async ({
   } else {
     order = await db.order.create({
       data: {
-        amount: price / 100,
+        amount: price, // store in cents
         userId: user.id,
         configurationId: configuration.id,
       },
     })
   }
 
-  const product = await stripe.products.create({
-    name: 'Custom iPhone Case',
-    images: [configuration.imageUrl],
-    default_price_data: {
-      currency: 'USD',
-      unit_amount: price,
-    },
-  })
-
   const stripeSession = await stripe.checkout.sessions.create({
     success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
     cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/configure/preview?id=${configuration.id}`,
     payment_method_types: ['card'],
     mode: 'payment',
+    customer_email: user.email ?? undefined,
     shipping_address_collection: { allowed_countries: ['DE', 'US'] },
     metadata: {
       userId: user.id,
       orderId: order.id,
     },
-    line_items: [{ price: product.default_price as string, quantity: 1 }],
+    line_items: [
+      {
+        quantity: 1,
+        price_data: {
+          currency: 'USD',
+          unit_amount: price,
+          product_data: {
+            name: 'Custom iPhone Case',
+            images: [configuration.imageUrl],
+          },
+        },
+      },
+    ],
   })
 
   return { url: stripeSession.url }

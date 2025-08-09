@@ -23,6 +23,12 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!
     )
 
+    // Idempotency: if we've already processed this event, acknowledge and exit
+    const alreadyProcessed = await db.stripeEvent.findUnique({ where: { id: event.id } })
+    if (alreadyProcessed) {
+      return NextResponse.json({ result: event, ok: true })
+    }
+
     if (event.type === 'checkout.session.completed') {
       if (!event.data.object.customer_details?.email) {
         throw new Error('Missing user email')
@@ -41,6 +47,13 @@ export async function POST(req: Request) {
 
       const billingAddress = session.customer_details!.address
       const shippingAddress = session.shipping_details!.address
+
+      // If order already paid, do nothing (idempotent)
+      const existingOrder = await db.order.findUnique({ where: { id: orderId } })
+      if (existingOrder?.isPaid) {
+        await db.stripeEvent.create({ data: { id: event.id } })
+        return NextResponse.json({ result: event, ok: true })
+      }
 
       const updatedOrder = await db.order.update({
         where: {
@@ -87,6 +100,9 @@ export async function POST(req: Request) {
         })
       }
     }
+
+    // Record processed event for idempotency
+    await db.stripeEvent.create({ data: { id: event.id } })
 
     return NextResponse.json({ result: event, ok: true })
   } catch (err) {

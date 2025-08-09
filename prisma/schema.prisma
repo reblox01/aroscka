@@ -53,7 +53,7 @@ model Configuration {
 
 model User {
   id    String  @id @default(cuid())
-  email String
+  email String  @unique
   Order Order[]
 
   createdAt DateTime @default(now())
@@ -66,7 +66,7 @@ model Order {
   configuration   Configuration @relation(fields: [configurationId], references: [id])
   user            User          @relation(fields: [userId], references: [id])
   userId          String
-  amount          Float
+  amount          Int
   isPaid          Boolean       @default(false)
   status          OrderStatus   @default(awaiting_shipment)
 
@@ -77,6 +77,11 @@ model Order {
 
   createdAt DateTime @default(now())
   updated   DateTime @updatedAt
+}
+
+model StripeEvent {
+  id        String   @id
+  createdAt DateTime @default(now())
 }
 
 model ShippingAddress {

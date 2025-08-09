@@ -15,6 +15,10 @@ export const formatPrice = (price: number) => {
   return formatter.format(price)
 }
 
+export const formatPriceFromCents = (priceInCents: number) => {
+  return formatPrice(priceInCents / 100)
+}
+
 export function constructMetadata({
   title = 'Aroscka - custom high-quality phone cases',
   description = 'Create custom high-quality phone cases in seconds',

@@ -16,7 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { db } from '@/db'
-import { formatPrice } from '@/lib/utils'
+import { formatPriceFromCents } from '@/lib/utils'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { notFound } from 'next/navigation'
 import StatusDropdown from './StatusDropdown'
@@ -71,8 +71,8 @@ const Page = async () => {
     },
   })
 
-  const WEEKLY_GOAL = 500
-  const MONTHLY_GOAL = 2500
+  const WEEKLY_GOAL_CENTS = 500 * 100
+  const MONTHLY_GOAL_CENTS = 2500 * 100
 
   return (
     <div className='flex min-h-screen w-full bg-muted/40'>
@@ -83,17 +83,17 @@ const Page = async () => {
               <CardHeader className='pb-2'>
                 <CardDescription>Last Week</CardDescription>
                 <CardTitle className='text-4xl'>
-                  {formatPrice(lastWeekSum._sum.amount ?? 0)}
+                  {formatPriceFromCents(lastWeekSum._sum.amount ?? 0)}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className='text-sm text-muted-foreground'>
-                  of {formatPrice(WEEKLY_GOAL)} goal
+                  of {formatPriceFromCents(WEEKLY_GOAL_CENTS)} goal
                 </div>
               </CardContent>
               <CardFooter>
                 <Progress
-                  value={((lastWeekSum._sum.amount ?? 0) * 100) / WEEKLY_GOAL}
+                  value={((lastWeekSum._sum.amount ?? 0) * 100) / WEEKLY_GOAL_CENTS}
                 />
               </CardFooter>
             </Card>
@@ -101,17 +101,17 @@ const Page = async () => {
               <CardHeader className='pb-2'>
                 <CardDescription>Last Month</CardDescription>
                 <CardTitle className='text-4xl'>
-                  {formatPrice(lastMonthSum._sum.amount ?? 0)}
+                  {formatPriceFromCents(lastMonthSum._sum.amount ?? 0)}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className='text-sm text-muted-foreground'>
-                  of {formatPrice(MONTHLY_GOAL)} goal
+                  of {formatPriceFromCents(MONTHLY_GOAL_CENTS)} goal
                 </div>
               </CardContent>
               <CardFooter>
                 <Progress
-                  value={((lastMonthSum._sum.amount ?? 0) * 100) / MONTHLY_GOAL}
+                  value={((lastMonthSum._sum.amount ?? 0) * 100) / MONTHLY_GOAL_CENTS}
                 />
               </CardFooter>
             </Card>
@@ -149,7 +149,7 @@ const Page = async () => {
                     {order.createdAt.toLocaleDateString()}
                   </TableCell>
                   <TableCell className='text-right'>
-                    {formatPrice(order.amount)}
+                    {formatPriceFromCents(order.amount)}
                   </TableCell>
                 </TableRow>
               ))}
